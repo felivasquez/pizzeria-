@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form method="POST">
+        Ingrese nombre:
+        <input type="text" name="nombre">
+        Ingrese apellido:
+        <input type="text" name="apellido">
+        <input type="submit" value="Enviar">
+    </form>
+</body>
+</html>
+<?php
+    include_once('conexion.php');
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // Verifica si los campos del formulario no están vacíos
+        if (!empty($_POST['nombre']) && !empty($_POST['apellido'])) {
+            // Obtén los datos del formulario
+            $nombre = $_POST['nombre'];
+            $apellido = $_POST['apellido'];
+
+            // Inserta los datos en la base de datos
+            $sql = "INSERT INTO usuarios (nombre, apellido) VALUES ('$nombre', '$apellido')";
+            if ($conexion->query($sql) === TRUE) {
+                echo "Registro ingresado correctamente.";
+            } else {
+                echo "Error al ingresar el registro: " . $conexion->error;
+            }
+        } else {
+            echo "Por favor, complete todos los campos del formulario.";
+        }
+    }
+
+    $conexion->close();
+?>
